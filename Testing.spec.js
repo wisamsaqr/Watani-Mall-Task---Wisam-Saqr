@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+
 describe("nopCommerce Testing", ()=>
 {
     before(()=>
@@ -45,19 +46,23 @@ describe("nopCommerce Testing", ()=>
         cy.url().should('include', '/monitors?orderby=price&_manufacturer=asus')
     })
 
-    
-
-
     context("Adding two products to the cart", ()=>
     {
         // go to categories page
         it("Adding first product to the cart inside monitors page", ()=>
         {
             // clicking adding button
-            cy.get('div.product-col:first-child > div.product-item a.btn-add-cart').click({force:true})
+            cy.get('div.shop-products-holder div.product-col:first-child > div.product-item a.btn-add-cart')
+                .click({force:true})
             // cy.get('div.product-col:first-child a.btn-add-cart')
 
             // Assertions
+            cy.get('header#header div.heder-action-nav div.header-mini-cart', {timeout:20000})
+                .should('be.visible')
+            // cy.get('div.header-mini-cart').should('be.visible')
+
+            cy.get('div.mini-cart-items > div.cart-item').should('have.length.greaterThan', 0)
+            
             ///////////////////////////////////////////////
             // cy.get('div.heder-action-nav span.counter ~ i.icon-cart').then($elem=>
             // {
@@ -71,11 +76,24 @@ describe("nopCommerce Testing", ()=>
             //     cy.log(t)
             // })
             /////////////////////////////////////////////////
-            
-            cy.get('header#header div.heder-action-nav div.header-mini-cart').should('be.visible')
-            // cy.get('div.header-mini-cart')
 
-            cy.get('div.mini-cart-items > div.cart-item').should('have.length.greaterThan', 0)
+            cy.get('div.heder-action-nav div.cart-header i.icon-close', ).click()
+        })
+
+        it("Adding second product to the cart inside product's page", ()=>
+        {
+            // navigating to 2nd product
+            cy.get('div.shop-products-holder div.product-col:nth-child(2)').click()
+            cy.url().should('include', '/monitor-asus')
+
+            cy.get('div.summary form.cart > button[name="add-to-cart"]').contains('إضافة إلى السلة')
+                .click()
+            // cy.get('button[name="add-to-cart"]')
+
+            // Assertions
+            cy.get('header#header div.heder-action-nav div.header-mini-cart', {timeout:20000})
+                .should('be.visible')
+            cy.get('div.mini-cart-items > div.cart-item').should('have.length.greaterThan', 1)
         })
     })
 })
