@@ -49,7 +49,7 @@ describe("nopCommerce Testing", () =>
         // go to categories page
         it("Adding first product to the cart inside monitors page", () =>
         {
-            // saving product price before adding 1st product
+            // saving product price before adding it to cart
             cy.get('div.shop-products-holder div.product-col:first-child > div.product-item bdi')
                 .invoke('text').as('price')
             // cy.get('div.shop-products-holder div.product-col:first-child > div.product-item bdi')
@@ -58,10 +58,16 @@ describe("nopCommerce Testing", () =>
             //         cy.log(t)
             //     })
 
-            // saving product count before adding 1st product
+            
+            // saving product name before adding it to cart
+            cy.get('div.shop-products-holder div.product-col:first-child h3.product-name > a')
+                .invoke('text').as('name')
+            
+            
+            // saving cart products count before adding 1st product
             cy.get('header#header div.heder-action-nav a > span.counter')
                 .invoke('text').as('counter')
-            
+
             
             
             
@@ -86,12 +92,13 @@ describe("nopCommerce Testing", () =>
                     cy.get('@price').should('eq', p2)
                 })
             
-            // comparing the price of the added product against the product in the cart menu
-            cy.get('div.mini-cart-items div.product-amount bdi').invoke('text')
-                .then(p2=>
-                {
-                    cy.get('@price').should('eq', p2)
-                })
+            
+            // // comparing the name of the added product against the product in the cart menu
+            // cy.get('div.mini-cart-items strong > a').invoke('text')
+            //     .then(n2=>
+            //     {
+            //         cy.get('@name').should('eq', n2)
+            //     })
             
             
             // comparing the cart products count before against after adding product
