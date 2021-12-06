@@ -7,15 +7,13 @@ describe("nopCommerce Testing", ()=>
         // Preserve cookie in every test
         Cypress.Cookies.defaults(
         {
-            preserve: (cookie) => {
-                return true;
-            }
+            preserve: (cookie) => {return true;}
         })
     })
 
     it("Verifying visiting Watani Mall homepage", ()=>
     {
-        cy.visit("https://watanimall.com/")
+        cy.visit("/")
         cy.url().should('eq', 'https://watanimall.com/')
     })
 
@@ -50,11 +48,34 @@ describe("nopCommerce Testing", ()=>
     
 
 
-    context("", ()=>
+    context("Adding two products to the cart", ()=>
     {
         // go to categories page
-        it("Visiting categories page", ()=>
+        it("Adding first product to the cart inside monitors page", ()=>
         {
+            // clicking adding button
+            cy.get('div.product-col:first-child > div.product-item a.btn-add-cart').click({force:true})
+            // cy.get('div.product-col:first-child a.btn-add-cart')
+
+            // Assertions
+            ///////////////////////////////////////////////
+            // cy.get('div.heder-action-nav span.counter ~ i.icon-cart').then($elem=>
+            // {
+            //     cy.wrap($elem.text()).as('counterBefore')
+            // })
+
+            // cy.get('div.heder-action-nav span.counter ~ i.icon-cart').invoke('text').as('counterBefore')
+
+            // cy.get('@counterBefore').invoke('text').then(t=>
+            // {
+            //     cy.log(t)
+            // })
+            /////////////////////////////////////////////////
+            
+            cy.get('header#header div.heder-action-nav div.header-mini-cart').should('be.visible')
+            // cy.get('div.header-mini-cart')
+
+            cy.get('div.mini-cart-items > div.cart-item').should('have.length.greaterThan', 0)
         })
     })
 })
