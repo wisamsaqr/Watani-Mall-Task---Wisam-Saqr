@@ -32,6 +32,21 @@ describe("nopCommerce Testing", ()=>
         cy.url().should('include', '/monitors')
     })
 
+    it("Verifying selecting asus filter then sorting the results by price ascendingly", ()=>
+    {
+        // selecting asus filter
+        cy.get('main#main div[data-name="manufacturer"] > div[data-value="asus"]').click()
+        // cy.get('div[data-value="asus"]').click()
+        cy.url().should('include', '/monitors?_manufacturer=asus')
+
+
+        // sorting the results by price ascendingly
+        cy.get('div.shop-page-container > div.sort-filter-row select[name="orderby"]')
+            .select('ترتيب حسب: الأدنى سعراً للأعلى', {force:true})
+        // cy.get('select[name="orderby"]')
+        cy.url().should('include', '/monitors?orderby=price&_manufacturer=asus')
+    })
+
     
 
 
